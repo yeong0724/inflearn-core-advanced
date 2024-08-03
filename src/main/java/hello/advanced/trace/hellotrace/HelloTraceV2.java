@@ -1,16 +1,15 @@
 package hello.advanced.trace.hellotrace;
 
+import hello.advanced.trace.PreFix;
 import hello.advanced.trace.TraceId;
 import hello.advanced.trace.TraceStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import static hello.advanced.trace.PreFix.*;
 
 @Slf4j
 @Component
 public class HelloTraceV2 {
-    private static final String START_PREFIX = "--> ";
-    private static final String COMPLETE_PREFIX = "<-- ";
-    private static final String EX_PREFIX = "X-- ";
 
     public TraceStatus begin(String message) {
         TraceId traceId = new TraceId();
@@ -26,6 +25,7 @@ public class HelloTraceV2 {
         Long startTimeMs = System.currentTimeMillis();
         log.info("[" + nextId.getId() + "] " + addSpace(START_PREFIX,
                 nextId.getLevel()) + message);
+
         return new TraceStatus(nextId, startTimeMs, message);
     }
 
@@ -50,7 +50,7 @@ public class HelloTraceV2 {
         }
     }
 
-    private static String addSpace(String prefix, int level) {
+    private static String addSpace(PreFix prefix, int level) {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < level; i++) {
             stringBuilder.append((i == level - 1) ? "|" + prefix : "|   ");
